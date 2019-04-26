@@ -10,10 +10,16 @@ import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
 
 import AddressItems from "../ListItems/AddressItems"
+import AuctionItems from "../ListItems/AuctionItems"
 import UintItems from "../ListItems/UintItems"
 import BoolItems from "../ListItems/BoolItems"
 
-let addressValues, uintValues, boolValues
+import web3 from 'web3'
+
+const blockDays = web3.utils.toBN(5760)
+const blockHours = web3.utils.toBN(240) // 4 blocks per minute * 60 minutes per hour
+
+let addressValues, uintValues, boolValues, auctionValues
 
 class PiggyToken extends Component {
   constructor(props, context) {
@@ -22,7 +28,7 @@ class PiggyToken extends Component {
     this.contracts = context.drizzle.contracts
     this.drizzle = context.drizzle
 
-    //this.handleExpand = this.handleExpand.bind(this)
+    this.handleExpand = this.handleExpand.bind(this)
 
     this.state = {
       dataKey: '0',
@@ -45,19 +51,50 @@ class PiggyToken extends Component {
     return id.slice(id.lastIndexOf("0")+1)
   }
 
+  groomPrice(price) {
+    let str = price.toString()
+    return `$` + str.slice(0, str.length-2) + `.` + str.slice(-2)
+  }
+
+  groomBlocks(blocks) {
+    let expiry = web3.utils.toBN(blocks)
+    let currentBlock = web3.utils.toBN(this.props.block)
+
+    let blockDelta = expiry.sub(currentBlock)
+    if (blockDelta.isNeg()) {
+      return "expired"
+    } else if (blockDelta.gte(blockDays)) {
+        let days = blockDelta.div(blockDays)
+        let hours = days.mul(blockDays).sub(blockDelta).abs().div(blockHours)
+        return days.toString() + `d:` + hours.toString() + `hrs`
+    } else if (blockDelta.lt(blockDays) && blockDelta.gte(blockHours)) {
+        let hours = (blockDays).sub(blockDelta).div(blockHours)
+        return `0d:` + hours.toString() + `hrs`
+    } else if (blockDelta.gt(web3.utils.toBN('0')) && blockDelta.lt(blockHours)) {
+        return `<1hr`
+    } else if (blockDelta.isZero()) {
+        return `expiring now`
+    }
+     return 'no data'
+  }
+
   handleExpand = (evt, expanded) => {
 
     if (expanded) {
-      this.contracts.SmartPiggies.methods.getDetails(this.groomID(this.props.piggy)).call()
+      let piggyId = this.groomID(this.props.piggy)
+      this.contracts.SmartPiggies.methods.getDetails(piggyId).call()
       .then(result => {
         if (result.length === 3) {
           addressValues = <AddressItems item={result[0]} />
           uintValues = <UintItems item={result[1]} />
           boolValues = <BoolItems item={result[2]} />
         }
-        //console.log(result[0])
-        //console.log(result[1])
-        //console.log(result[2])
+      })
+      this.contracts.SmartPiggies.methods.getAuctionDetails(piggyId).call()
+      .then(result => {
+        if (result.length === 8) {
+          auctionValues = <AuctionItems item={result} />
+        }
       })
     }
 
@@ -82,11 +119,11 @@ class PiggyToken extends Component {
                 </Grid>
 
                 <Grid item xs={2}>
-                  Strike: {this.props.strike}
+                  Strike: {this.groomPrice(this.props.strike)}
                 </Grid>
 
                 <Grid item xs={2}>
-                  Expiry: {this.props.expiry}
+                  Expiry: {this.groomBlocks(this.props.expiry)}
                 </Grid>
 
                 <Grid item xs={2}>
@@ -98,6 +135,7 @@ class PiggyToken extends Component {
               {addressValues}
               {uintValues}
               {boolValues}
+              {auctionValues}
           </ExpansionPanelDetails>
         </ExpansionPanel>
         <Divider />

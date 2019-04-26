@@ -119,6 +119,7 @@ class FetchData extends Component {
         //key param needed for the component
         return <PiggyToken
                   key={item.index}
+                  block={this.props.block}
                   id={item.id}
                   piggy={item.piggyId}
                   asset={filledUnderlying}
