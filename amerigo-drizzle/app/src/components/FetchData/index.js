@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { drizzleConnect } from 'drizzle-react'
+import PropTypes from 'prop-types'
 
 //components
 import PiggyToken from "../PiggyToken"
@@ -136,8 +137,13 @@ class FetchData extends Component {
   }
 }
 
+FetchData.contextTypes = {
+  drizzle: PropTypes.object
+}
+
 const mapStateToProps = state => {
   return {
+    accounts: state.accounts,
     drizzleStatus: state.drizzleStatus,
     SmartPiggies: state.contracts.SmartPiggies
   }

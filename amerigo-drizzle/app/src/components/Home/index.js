@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { drizzleConnect } from 'drizzle-react'
+import PropTypes from 'prop-types'
 
 import '../../App.js'
 
@@ -28,7 +29,6 @@ class Home extends Component {
 
   render() {
     //console.log(this.state.piggyDetailMap)
-    console.log(this.context)
     return (
       <div className='App'>
         Home App
@@ -38,8 +38,13 @@ class Home extends Component {
   }
 }
 
+Home.contextTypes = {
+  drizzle: PropTypes.object
+}
+
 const mapStateToProps = state => {
   return {
+    accounts: state.accounts,
     drizzleStatus: state.drizzleStatus,
     SmartPiggies: state.contracts.SmartPiggies
   }

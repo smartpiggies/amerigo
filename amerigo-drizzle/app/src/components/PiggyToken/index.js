@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { drizzleConnect } from 'drizzle-react'
+import PropTypes from 'prop-types'
 
 //components
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
@@ -13,14 +14,19 @@ class PiggyToken extends Component {
   constructor(props, context) {
     super(props)
 
+    this.contracts = context.drizzle.contracts
+    this.drizzle = context.drizzle
+
     this.handleExpand = this.handleExpand.bind(this)
 
     this.state = {
-      panelOpen: false
+      panelOpen: false,
+      dataKey: '0',
     }
   }
 
   componentDidMount() {
+    this.contracts.SmartPiggies.methods['getDetails'].cacheCall(0, {from: this.props.accounts[0]})
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -39,13 +45,28 @@ class PiggyToken extends Component {
     this.setState({
       panelOpen: !this.state.panelOpen
     })
-    console.log(this.props.SmartPiggies)
+    console.log(this.props.SmartPiggies.getDetails)
+
+    //this.contracts.SmartPiggies.methods.getDetails(0).call()
+    /**
+    this.setState({
+      dataKey: this.contracts.SmartPiggies.methods['getDetails'].cacheCall(0, {from: this.props.accounts[0]})
+    })
+    **/
+    /**
+    this.contracts.SmartPiggies.methods.getDetails(0).call()
+    .then(result => {
+      let array = result
+      console.log(array[0])
+    })
+    **/
   }
 
   render() {
     //console.log(this.state.piggyDetailMap)
     //let groomedId = this.groomID(this.props.piggy)
-
+    //console.log(this.props.SmartPiggies.getDetails[this.state.dataKey])
+    //console.log(this.state.dataKey)
     return (
       <div>
         <ExpansionPanel onChange={this.handleExpand}>
@@ -84,8 +105,13 @@ class PiggyToken extends Component {
   }
 }
 
+PiggyToken.contextTypes = {
+  drizzle: PropTypes.object
+}
+
 const mapStateToProps = state => {
   return {
+    accounts: state.accounts,
     drizzleStatus: state.drizzleStatus,
     SmartPiggies: state.contracts.SmartPiggies
   }

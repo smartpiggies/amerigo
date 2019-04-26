@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
+import { DrizzleProvider } from 'drizzle-react'
+
+import SmartPiggies from './contracts/SmartPiggies.json'
 
 import Home from './components/Home'
 
 //import logo from './logo.svg';
 import './App.css';
 
+const options = { contracts: [SmartPiggies] }
+
 class App extends Component {
   render() {
     return (
-      <Home />
+      <DrizzleProvider options={options}>
+        <Home />
+      </DrizzleProvider>
     );
   }
 }
