@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { drizzleConnect } from 'drizzle-react'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import AppBar from '@material-ui/core/AppBar'
@@ -171,4 +172,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default drizzleConnect(Home, mapStateToProps);
+export default withRouter(drizzleConnect(Home, mapStateToProps))

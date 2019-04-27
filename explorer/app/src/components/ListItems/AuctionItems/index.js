@@ -27,6 +27,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button'
 
 let uintArray = [
   "Start Block",
@@ -83,6 +84,10 @@ class AuctionItems extends Component {
         })
       }
     }
+  }
+
+  handleSatisfy = () => {
+    console.log("do something")
   }
 
   render() {
@@ -149,6 +154,11 @@ class AuctionItems extends Component {
           </TableRow>
         </TableBody>
       </Table>
+      <br></br>
+      { this.state.auctionActive
+        ? <Button variant="contained" color="default" onClick={this.handleSatisfy}>Buy</Button>
+        : null
+      }
       </div>
     )
   }
