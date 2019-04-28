@@ -37,7 +37,7 @@ class FetchData extends Component {
     return id.slice(id.lastIndexOf("0")+1)
   }
 
-  async fetchPiggies2() {
+  async fetchPiggies() {
     // fetch last 10 records as JSON
     let lten = await fetch(endpoint)
     let ltenjson = await lten.json()
@@ -63,7 +63,7 @@ class FetchData extends Component {
       tokens[item]['oracleAddress'] = oaddress
       tokens[item]['oracleData'] = odata
     })
-    console.log('tokens: ', tokens)
+    //console.log('tokens: ', tokens)
 
     this.setState({
       pdict: tokens
@@ -82,16 +82,16 @@ class FetchData extends Component {
   async fetchOracleData(oaddress) {
     let otx = await fetch('https://api.goerli.aleth.io/v1/contracts/' + oaddress)
     let otxjson = await otx.json()
-    // console.log(otxjson)
+
     let returndata = {}
     returndata['underlying'] = this.hex2a(otxjson.data.attributes.constructorArgs[10])
     returndata['datasource'] = this.hex2a(otxjson.data.attributes.constructorArgs[8])
     returndata['api'] = this.hex2a(otxjson.data.attributes.constructorArgs[14] + otxjson.data.attributes.constructorArgs[15])
-    // console.log('returndata: ', returndata)
+
     return returndata
   }
 
-  fetchPiggies() {
+  fetchPiggiesOld() {
     let address = '0'
 
     fetch(endpoint)
@@ -101,6 +101,7 @@ class FetchData extends Component {
     .then(jsonResult => {
       jsonResult.data.map((item, i) => {
         if (item.attributes.eventDecoded.topic0 === '0xaa2032c3a05e7293eec92b9f41cfe70d5d753b29790a3f2cdeace3d6f5c9b749') {
+
           fetch(item.relationships.transaction.links.related)
           .then(result => {
             return result.json()
@@ -115,20 +116,6 @@ class FetchData extends Component {
             })
             .then(result => {
               let oracleArray = this.state.oracles
-              if(result.data.attributes.constructorArgs[17] !== undefined) {
-                console.log("oralce 6: ", this.hex2a(result.data.attributes.constructorArgs[6]))
-                console.log("oralce 7: ", this.hex2a(result.data.attributes.constructorArgs[7]))
-                console.log("oralce 8: ", this.hex2a(result.data.attributes.constructorArgs[8]))
-                console.log("oralce 9: ", this.hex2a(result.data.attributes.constructorArgs[9]))
-                console.log("oralce 10: ", this.hex2a(result.data.attributes.constructorArgs[10]))
-                console.log("oralce 11: ", this.hex2a(result.data.attributes.constructorArgs[11]))
-                console.log("oralce 12: ", this.hex2a(result.data.attributes.constructorArgs[12]))
-                console.log("oralce 13: ", this.hex2a(result.data.attributes.constructorArgs[13]))
-                console.log("oralce 14: ", this.hex2a(result.data.attributes.constructorArgs[14]))
-                console.log("oralce 15: ", this.hex2a(result.data.attributes.constructorArgs[15]))
-                console.log("oralce 16: ", this.hex2a(result.data.attributes.constructorArgs[16]))
-                console.log("oralce 17: ", this.hex2a(result.data.attributes.constructorArgs[17]))
-              }
               oracleArray.push(
                 {
                   piggyId: this.groomID(item.attributes.eventDecoded.inputs[1].value),
@@ -161,8 +148,7 @@ class FetchData extends Component {
           this.setState({
             piggies: piggyArray
           })
-          //console.log("piggies: ", this.state.piggies)
-          //console.log("oracles: ", this.state.oracles)
+
         } //end of log check for create event topic0
 
         if (item.attributes.eventDecoded.topic0 === '0x88a665277b4dcf78a761227e836d2b9c98169b818abf80cb4297114cb71a019f') {
@@ -188,8 +174,7 @@ class FetchData extends Component {
 
   componentDidMount() {
     this.fetchPiggies()
-    this.fetchPiggies2()
-    console.log('Piggy Dict: ', this.state.pdict)
+    
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -205,37 +190,34 @@ class FetchData extends Component {
     //console.log(this.state.piggies[0])
     //console.log("piggies: ", this.state.piggies)
     //console.log("auctions: ", this.state.auctions)
-    let tokens, filledUnderlying, filledURL
+    let tokenKeys = Object.keys(this.state.pdict)
+    let tokens
+    let piggy = '', asset = '', strike = '', expiry = '', url = ''
     let onAuction = "no"
+    if (tokenKeys.length > 0) {
+      tokens = tokenKeys.map((item) => {
+        if (this.state.pdict[item].oracleData !== undefined) {
+          piggy = item
+          asset = this.state.pdict[item].oracleData.underlying
+          url = this.state.pdict[item].oracleData.datasource
+          strike = this.state.pdict[item].strike
+          expiry = this.state.pdict[item].expiry
+        }
 
-    if (this.state.piggies[0] !== undefined && this.state.oracles[0] !== undefined) {
-      let found = this.state.piggies.map(item => {
-        return this.groomID(item.piggyId)
-      })
-      //console.log("found: ", found)
-      tokens = this.state.piggies.map((item) => {
-        if (this.state.oracles[item.index] !== undefined) {
-          filledUnderlying = this.state.oracles[item.index].underlying
-          filledURL = this.state.oracles[item.index].url
-        }
-        if (this.state.auctions[item.index] !== undefined) {
-          onAuction = "yes"
-        }
-        //key param needed for the component
         return <PiggyToken
-                  key={item.index}
+                  key={item}
                   block={this.props.block}
-                  id={item.id}
-                  piggy={item.piggyId}
-                  asset={filledUnderlying}
-                  strike={item.strike}
-                  expiry={item.expiry}
-                  url={filledURL}
+                  piggy={piggy}
+                  asset={asset}
+                  strike={strike}
+                  expiry={expiry}
+                  url={url}
                   auction={onAuction}
               />
-      })
 
-    }
+        })
+      }
+
     return (
       <div>
         {tokens}
