@@ -129,6 +129,10 @@ class PiggyToken extends Component {
                 <Grid item xs={2}>
                   URL: {this.props.url}
                 </Grid>
+
+                <Grid item xs={2}>
+                  On Auction: {this.props.auction}
+                </Grid>
               </Grid>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>

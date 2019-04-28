@@ -29,6 +29,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button'
 
+import web3 from 'web3'
+
 let uintArray = [
   "Start Block",
   "Expiry Block",
@@ -90,6 +92,10 @@ class AuctionItems extends Component {
     console.log("do something")
   }
 
+  groomPrice(price) {
+    return web3.utils.fromWei(price, "ether") + " TKN"
+  }
+
   render() {
 
     return (
@@ -117,7 +123,7 @@ class AuctionItems extends Component {
             {uintArray[2]}
           </TableCell>
             <TableCell align="right">
-              {this.state.startPrice}
+              {this.groomPrice(this.state.startPrice)}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -125,7 +131,7 @@ class AuctionItems extends Component {
             {uintArray[3]}
           </TableCell>
             <TableCell align="right">
-              {this.state.reservePrice}
+              {this.groomPrice(this.state.reservePrice)}
             </TableCell>
           </TableRow>
           <TableRow>
