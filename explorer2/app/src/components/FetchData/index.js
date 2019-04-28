@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { drizzleConnect } from 'drizzle-react'
 import PropTypes from 'prop-types'
-import Promisify from 'promisify'
+
 //components
 import PiggyToken from "../PiggyToken"
 
@@ -115,18 +115,20 @@ class FetchData extends Component {
             })
             .then(result => {
               let oracleArray = this.state.oracles
-              console.log("oralce 6: ", this.hex2a(result.data.attributes.constructorArgs[6]))
-              console.log("oralce 7: ", this.hex2a(result.data.attributes.constructorArgs[7]))
-              console.log("oralce 8: ", this.hex2a(result.data.attributes.constructorArgs[8]))
-              console.log("oralce 9: ", this.hex2a(result.data.attributes.constructorArgs[9]))
-              console.log("oralce 10: ", this.hex2a(result.data.attributes.constructorArgs[10]))
-              console.log("oralce 11: ", this.hex2a(result.data.attributes.constructorArgs[11]))
-              console.log("oralce 12: ", this.hex2a(result.data.attributes.constructorArgs[12]))
-              console.log("oralce 13: ", this.hex2a(result.data.attributes.constructorArgs[13]))
-              console.log("oralce 14: ", this.hex2a(result.data.attributes.constructorArgs[14]))
-              console.log("oralce 15: ", this.hex2a(result.data.attributes.constructorArgs[15]))
-              console.log("oralce 16: ", this.hex2a(result.data.attributes.constructorArgs[16]))
-              console.log("oralce 17: ", this.hex2a(result.data.attributes.constructorArgs[17]))
+              if(result.data.attributes.constructorArgs[17] !== undefined) {
+                console.log("oralce 6: ", this.hex2a(result.data.attributes.constructorArgs[6]))
+                console.log("oralce 7: ", this.hex2a(result.data.attributes.constructorArgs[7]))
+                console.log("oralce 8: ", this.hex2a(result.data.attributes.constructorArgs[8]))
+                console.log("oralce 9: ", this.hex2a(result.data.attributes.constructorArgs[9]))
+                console.log("oralce 10: ", this.hex2a(result.data.attributes.constructorArgs[10]))
+                console.log("oralce 11: ", this.hex2a(result.data.attributes.constructorArgs[11]))
+                console.log("oralce 12: ", this.hex2a(result.data.attributes.constructorArgs[12]))
+                console.log("oralce 13: ", this.hex2a(result.data.attributes.constructorArgs[13]))
+                console.log("oralce 14: ", this.hex2a(result.data.attributes.constructorArgs[14]))
+                console.log("oralce 15: ", this.hex2a(result.data.attributes.constructorArgs[15]))
+                console.log("oralce 16: ", this.hex2a(result.data.attributes.constructorArgs[16]))
+                console.log("oralce 17: ", this.hex2a(result.data.attributes.constructorArgs[17]))
+              }
               oracleArray.push(
                 {
                   piggyId: this.groomID(item.attributes.eventDecoded.inputs[1].value),
