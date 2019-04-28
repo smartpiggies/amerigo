@@ -91,9 +91,14 @@ class FetchData extends Component {
     let otxjson = await otx.json()
 
     let returndata = {}
-    returndata['underlying'] = this.hex2a(otxjson.data.attributes.constructorArgs[10])
-    returndata['datasource'] = this.hex2a(otxjson.data.attributes.constructorArgs[8])
-    returndata['api'] = this.hex2a(otxjson.data.attributes.constructorArgs[14] + otxjson.data.attributes.constructorArgs[15])
+    if (otxjson.data.attributes.constructorArgs[17] !== undefined) {
+      returndata['underlying'] = this.hex2a(otxjson.data.attributes.constructorArgs[10])
+      returndata['datasource'] = this.hex2a(otxjson.data.attributes.constructorArgs[8])
+      returndata['api'] = this.hex2a(otxjson.data.attributes.constructorArgs[14]) +
+        this.hex2a(otxjson.data.attributes.constructorArgs[15]) +
+          this.hex2a(otxjson.data.attributes.constructorArgs[16]) +
+            this.hex2a(otxjson.data.attributes.constructorArgs[17])
+    }
 
     return returndata
   }
@@ -193,9 +198,6 @@ class FetchData extends Component {
   }
 
   render() {
-    //console.log(this.state.oracles)
-    //console.log(this.state.piggies[0])
-    //console.log("piggies: ", this.state.piggies)
     //console.log(this.state.pdict)
     let tokenKeys = Object.keys(this.state.pdict)
     let tokens
