@@ -17,7 +17,10 @@ class FetchData extends Component {
     this.state = {
       piggies: [],
       oracles: [],
-      auctions: []
+      auctions: [],
+      // see if this is easier with objects than arrays, for indexing purposes
+      // keys for all of these should be the PiggyID so they can easily be cross-referenced
+      pdict: {},
     }
 
   }
@@ -32,6 +35,57 @@ class FetchData extends Component {
 
   groomID(id) {
     return id.slice(id.lastIndexOf("0")+1)
+  }
+
+  async fetchPiggies2() {
+    // fetch last 10 records as JSON
+    let lten = await fetch(endpoint)
+    let ltenjson = await lten.json()
+    // console.log(ltenjson)
+    // parse out token creation events and get whatever data we can get from those
+    let tokens = this.state.pdict
+    ltenjson.data.map((item) => {
+      if (item.attributes.eventDecoded.topic0 === '0xaa2032c3a05e7293eec92b9f41cfe70d5d753b29790a3f2cdeace3d6f5c9b749') {
+        tokens[item.attributes.eventDecoded.inputs[1].value] = {
+          'writer': item.attributes.eventDecoded.inputs[0].value,
+          'strike': parseInt(item.attributes.eventDecoded.inputs[2].value, 16),
+          'expiry': parseInt(item.attributes.eventDecoded.inputs[3].value, 16),
+          'rfp': item.attributes.eventDecoded.inputs[4].value.slice(-1) === '0' ? false:true,
+          'txurl': item.relationships.transaction.links.related,
+        }
+      }
+    })
+    Object.keys(tokens).map((item) => {
+      let test = this.scrapePiggyTx(tokens[item].txurl)
+      tokens[item]['oracleAddress'] = test
+    })
+    console.log('tokens: ', tokens)
+
+    // this.setState({
+    //   pdict: tokens
+    // })
+  }
+
+  async scrapePiggyTx(txurl) {
+    // map over txurl values to look up piggy creation transactions
+      let ptx = await fetch(txurl)
+      let ptxjson = await ptx.json()
+      // console.log("something", ptxjson)
+      let oracleAddress = ptxjson.data.attributes.msgPayload.inputs[2].value.slice(24)
+      return oracleAddress
+  }
+
+  // try to do this using .then() so that it is not async and does not return a promise
+
+  async fetchOracleData(oaddress) {
+    let otx = await fetch('https://api.goerli.aleth.io/v1/contracts/' + oaddress)
+    let otxjson = await otx.json()
+    let returndata = {}
+    returndata['underlying'] = this.hex2a(otxjson.data.attributes.constructorArgs[10])
+    returndata['datasource'] = this.hex2a(otxjson.data.attributes.constructorArgs[8])
+    returndata['api'] = this.hex2a(otxjson.data.attributes.constructorArgs[14] + otxjson.data.attributes.constructorArgs[15])
+    console.log('returndata: ', returndata)
+    return returndata
   }
 
   fetchPiggies() {
@@ -129,6 +183,8 @@ class FetchData extends Component {
 
   componentDidMount() {
     this.fetchPiggies()
+    this.fetchPiggies2()
+    // this.scrapePiggyTx()
   }
 
   componentDidUpdate(prevProps, prevState) {
