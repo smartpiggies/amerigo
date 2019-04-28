@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import React, { Component } from 'react'
 import { drizzleConnect } from 'drizzle-react'
 import PropTypes from 'prop-types'
+import web3 from 'web3'
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -85,6 +86,10 @@ class UintItems extends Component {
     }
   }
 
+  groomPrice(price) {
+    return web3.utils.fromWei(price, "ether") + " TKN"
+  }
+
   render() {
 
     return (
@@ -96,7 +101,7 @@ class UintItems extends Component {
               {uintArray[0]}
             </TableCell>
             <TableCell align="right">
-              {this.state.collateral}
+              {this.groomPrice(this.state.collateral)}
             </TableCell>
           </TableRow>
           <TableRow>
