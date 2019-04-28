@@ -30,7 +30,7 @@ class FetchData extends Component {
       var str = '';
       for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
           str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-      return str;
+      return str.trim();
   }
 
   groomID(id) {
@@ -55,15 +55,19 @@ class FetchData extends Component {
         }
       }
     })
-    Object.keys(tokens).map((item) => {
-      let test = this.scrapePiggyTx(tokens[item].txurl)
-      tokens[item]['oracleAddress'] = test
+    // given the transaction creation URLs, find the oracle address specified for each piggy and scrape it for (piggy) API data
+    Object.keys(tokens).map(async (item) => {
+      let urlToFetch = tokens[item]['txurl']
+      let oaddress = await this.scrapePiggyTx(urlToFetch)
+      let odata = await this.fetchOracleData(oaddress)
+      tokens[item]['oracleAddress'] = oaddress
+      tokens[item]['oracleData'] = odata
     })
     console.log('tokens: ', tokens)
 
-    // this.setState({
-    //   pdict: tokens
-    // })
+    this.setState({
+      pdict: tokens
+    })
   }
 
   async scrapePiggyTx(txurl) {
@@ -75,16 +79,15 @@ class FetchData extends Component {
       return oracleAddress
   }
 
-  // try to do this using .then() so that it is not async and does not return a promise
-
   async fetchOracleData(oaddress) {
     let otx = await fetch('https://api.goerli.aleth.io/v1/contracts/' + oaddress)
     let otxjson = await otx.json()
+    // console.log(otxjson)
     let returndata = {}
     returndata['underlying'] = this.hex2a(otxjson.data.attributes.constructorArgs[10])
     returndata['datasource'] = this.hex2a(otxjson.data.attributes.constructorArgs[8])
     returndata['api'] = this.hex2a(otxjson.data.attributes.constructorArgs[14] + otxjson.data.attributes.constructorArgs[15])
-    console.log('returndata: ', returndata)
+    // console.log('returndata: ', returndata)
     return returndata
   }
 
@@ -184,7 +187,7 @@ class FetchData extends Component {
   componentDidMount() {
     this.fetchPiggies()
     this.fetchPiggies2()
-    // this.scrapePiggyTx()
+    console.log('Piggy Dict: ', this.state.pdict)
   }
 
   componentDidUpdate(prevProps, prevState) {
