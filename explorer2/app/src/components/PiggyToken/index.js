@@ -131,7 +131,7 @@ class PiggyToken extends Component {
                 </Grid>
 
                 <Grid item xs={2}>
-                  On Auction: {this.props.auction}
+                  On Auction: {this.props.auction.toString()}
                 </Grid>
               </Grid>
           </ExpansionPanelSummary>

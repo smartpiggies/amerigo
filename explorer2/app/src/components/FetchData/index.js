@@ -41,7 +41,6 @@ class FetchData extends Component {
     // fetch last 10 records as JSON
     let lten = await fetch(endpoint)
     let ltenjson = await lten.json()
-    // console.log(ltenjson)
     // parse out token creation events and get whatever data we can get from those
     let tokens = this.state.pdict
     ltenjson.data.map((item) => {
@@ -52,6 +51,7 @@ class FetchData extends Component {
           'expiry': parseInt(item.attributes.eventDecoded.inputs[3].value, 16),
           'rfp': item.attributes.eventDecoded.inputs[4].value.slice(-1) === '0' ? false:true,
           'txurl': item.relationships.transaction.links.related,
+          'onAuction': false
         }
       }
     })
@@ -63,12 +63,19 @@ class FetchData extends Component {
       tokens[item]['oracleAddress'] = oaddress
       tokens[item]['oracleData'] = odata
     })
-    //console.log('tokens: ', tokens)
 
     this.setState({
       pdict: tokens
     })
-  }
+
+    // check for auction events and get auction status
+    ltenjson.data.map((item) => {
+      if (item.attributes.eventDecoded.topic0 === '0x88a665277b4dcf78a761227e836d2b9c98169b818abf80cb4297114cb71a019f') {
+        this.state.pdict[item.attributes.eventDecoded.inputs[1].value]['onAuction'] = true
+      }
+    })
+
+  } //end fetch block
 
   async scrapePiggyTx(txurl) {
     // map over txurl values to look up piggy creation transactions
@@ -174,7 +181,7 @@ class FetchData extends Component {
 
   componentDidMount() {
     this.fetchPiggies()
-    
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -189,11 +196,11 @@ class FetchData extends Component {
     //console.log(this.state.oracles)
     //console.log(this.state.piggies[0])
     //console.log("piggies: ", this.state.piggies)
-    //console.log("auctions: ", this.state.auctions)
+    //console.log(this.state.pdict)
     let tokenKeys = Object.keys(this.state.pdict)
     let tokens
     let piggy = '', asset = '', strike = '', expiry = '', url = ''
-    let onAuction = "no"
+    let onAuction = false
     if (tokenKeys.length > 0) {
       tokens = tokenKeys.map((item) => {
         if (this.state.pdict[item].oracleData !== undefined) {
@@ -202,6 +209,7 @@ class FetchData extends Component {
           url = this.state.pdict[item].oracleData.datasource
           strike = this.state.pdict[item].strike
           expiry = this.state.pdict[item].expiry
+          onAuction = this.state.pdict[item].onAuction
         }
 
         return <PiggyToken
