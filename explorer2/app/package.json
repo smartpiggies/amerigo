@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.3",
+    "blubird": "^0.0.1-security",
     "drizzle": "^1.2.4",
     "drizzle-react": "^1.2.0",
     "drizzle-react-components": "^1.2.1",

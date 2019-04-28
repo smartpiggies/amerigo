@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { drizzleConnect } from 'drizzle-react'
 import PropTypes from 'prop-types'
-
+import Promisify from 'promisify'
 //components
 import PiggyToken from "../PiggyToken"
 
@@ -58,8 +58,21 @@ class FetchData extends Component {
             })
             .then(result => {
               let oracleArray = this.state.oracles
+              console.log("oralce 6: ", this.hex2a(result.data.attributes.constructorArgs[6]))
+              console.log("oralce 7: ", this.hex2a(result.data.attributes.constructorArgs[7]))
+              console.log("oralce 8: ", this.hex2a(result.data.attributes.constructorArgs[8]))
+              console.log("oralce 9: ", this.hex2a(result.data.attributes.constructorArgs[9]))
+              console.log("oralce 10: ", this.hex2a(result.data.attributes.constructorArgs[10]))
+              console.log("oralce 11: ", this.hex2a(result.data.attributes.constructorArgs[11]))
+              console.log("oralce 12: ", this.hex2a(result.data.attributes.constructorArgs[12]))
+              console.log("oralce 13: ", this.hex2a(result.data.attributes.constructorArgs[13]))
+              console.log("oralce 14: ", this.hex2a(result.data.attributes.constructorArgs[14]))
+              console.log("oralce 15: ", this.hex2a(result.data.attributes.constructorArgs[15]))
+              console.log("oralce 16: ", this.hex2a(result.data.attributes.constructorArgs[16]))
+              console.log("oralce 17: ", this.hex2a(result.data.attributes.constructorArgs[17]))
               oracleArray.push(
                 {
+                  piggyId: this.groomID(item.attributes.eventDecoded.inputs[1].value),
                   address: address,
                   underlying: this.hex2a(result.data.attributes.constructorArgs[10]),
                   url: this.hex2a(result.data.attributes.constructorArgs[8]),
@@ -89,6 +102,8 @@ class FetchData extends Component {
           this.setState({
             piggies: piggyArray
           })
+          //console.log("piggies: ", this.state.piggies)
+          //console.log("oracles: ", this.state.oracles)
         } //end of log check for create event topic0
 
         if (item.attributes.eventDecoded.topic0 === '0x88a665277b4dcf78a761227e836d2b9c98169b818abf80cb4297114cb71a019f') {
@@ -133,6 +148,10 @@ class FetchData extends Component {
     let onAuction = "no"
 
     if (this.state.piggies[0] !== undefined && this.state.oracles[0] !== undefined) {
+      let found = this.state.piggies.map(item => {
+        return this.groomID(item.piggyId)
+      })
+      //console.log("found: ", found)
       tokens = this.state.piggies.map((item) => {
         if (this.state.oracles[item.index] !== undefined) {
           filledUnderlying = this.state.oracles[item.index].underlying

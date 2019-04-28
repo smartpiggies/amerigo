@@ -81,6 +81,15 @@ class AddressItem extends Component {
     }
   }
 
+  groomAddress(address) {
+    let groomed
+    if (address !== '0x0000000000000000000000000000000000000000') {
+      groomed = address.slice(0, 6)
+      groomed = groomed + "...." + address.slice(-4)
+    }
+    return groomed
+  }
+
   render() {
 
     return (
@@ -92,7 +101,7 @@ class AddressItem extends Component {
               {addressArray[0]}
             </TableCell>
             <TableCell align="right">
-              {this.state.writer}
+              {this.groomAddress(this.state.writer)}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -100,7 +109,7 @@ class AddressItem extends Component {
               {addressArray[1]}
             </TableCell>
             <TableCell align="right">
-              {this.state.holder}
+              {this.groomAddress(this.state.holder)}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -108,7 +117,7 @@ class AddressItem extends Component {
             {addressArray[2]}
           </TableCell>
             <TableCell align="right">
-              {this.state.collateral}
+              {this.groomAddress(this.state.collateral)}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -116,7 +125,7 @@ class AddressItem extends Component {
             {addressArray[3]}
           </TableCell>
             <TableCell align="right">
-              {this.state.premium}
+              {this.groomAddress(this.state.premium)}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -124,7 +133,7 @@ class AddressItem extends Component {
             {addressArray[4]}
           </TableCell>
             <TableCell align="right">
-              {this.state.resolverNow}
+              {this.groomAddress(this.state.resolverNow)}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -132,7 +141,7 @@ class AddressItem extends Component {
             {addressArray[5]}
           </TableCell>
             <TableCell align="right">
-              {this.state.resolverAtExpiry}
+              {this.groomAddress(this.state.resolverAtExpiry)}
             </TableCell>
           </TableRow>
         </TableBody>
