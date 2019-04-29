@@ -213,8 +213,8 @@ class FetchData extends Component {
           expiry = this.state.pdict[item].expiry
           onAuction = this.state.pdict[item].onAuction
         }
-
-        return <PiggyToken
+        if (this.props.onlyOnAuction && onAuction) {
+          return <PiggyToken
                   key={item}
                   block={this.props.block}
                   piggy={piggy}
@@ -224,9 +224,20 @@ class FetchData extends Component {
                   url={url}
                   auction={onAuction}
               />
-
-        })
-      }
+        } else if (!this.props.onlyOnAuction) {
+          return <PiggyToken
+                  key={item}
+                  block={this.props.block}
+                  piggy={piggy}
+                  asset={asset}
+                  strike={strike}
+                  expiry={expiry}
+                  url={url}
+                  auction={onAuction}
+              />
+        }
+      })
+    }
 
     return (
       <div>

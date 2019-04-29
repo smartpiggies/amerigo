@@ -5,6 +5,9 @@ import PropTypes from 'prop-types'
 
 import AppBar from '@material-ui/core/AppBar'
 import FetchData from "../FetchData"
+import Card from '@material-ui/core/Card'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 
 import '../../App.js'
 
@@ -13,6 +16,10 @@ const appBar = {
   //height: 50,
   display: 'block',
   padding: 10,
+}
+
+const toggle = {
+  paddingLeft: 10
 }
 
 // current network client is connected to
@@ -30,7 +37,7 @@ class Home extends Component {
       activeAccount: '',
       blockNumber: 0,
       network: 0,
-
+      onlyOnAuction: false,
       //datakeys
       dataKeyGetOwnedPiggies: '',
     }
@@ -128,6 +135,10 @@ class Home extends Component {
     return groomed
   }
 
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
+
   render() {
     //console.log(this.state.piggyDetailMap)
     let groomedAddress = this.groomAddress(this.state.activeAccount)
@@ -153,7 +164,21 @@ class Home extends Component {
         </AppBar>
 
         <div className='Main'>
-          <FetchData block={this.state.blockNumber} />
+          <Card>
+            <FormControlLabel
+              style={toggle}
+              control={
+                <Switch
+                  checked={this.state.onlyOnAuction}
+                  onChange={this.handleChange('onlyOnAuction')}
+                  value='onlyOnAuction'
+                  color='primary'
+                />
+              }
+              label='Show Only Piggies on Auction'
+            />
+            <FetchData block={this.state.blockNumber} onlyOnAuction={this.state.onlyOnAuction} />
+          </Card>
         </div>
       </div>
     )
