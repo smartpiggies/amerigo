@@ -26,7 +26,7 @@ const appBar = {
 }
 
 const toggle = {
-  paddingLeft: 10
+  paddingLeft: 10,
 }
 
 // current network client is connected to
@@ -176,7 +176,7 @@ class Home extends Component {
         </AppBar>
         <div className='Main'>
           <div>
-            <Card className='WelcomeBar'>
+            <Card className='WelcomeBar' style={{backgroundColor: '#FFCBCB'}}>
               <Typography variant='h4' className='WelcomeBar'>Welcome to Amerigo!</Typography>
               <Divider />
               <Typography variant='body1' className='WelcomeBar'>Amerigo is an explorer for SmartPiggies. View available options below, and if you find one you like, buy it!</Typography>
@@ -191,7 +191,7 @@ class Home extends Component {
                   checked={this.state.onlyOnAuction}
                   onChange={this.handleChange('onlyOnAuction')}
                   value='onlyOnAuction'
-                  color='primary'
+                  style={{color: '#FFCBCB'}}
                 />
               }
               label='Show Only Piggies on Auction'
@@ -202,7 +202,9 @@ class Home extends Component {
         <div className='Footer'>
             <BottomNavigation
             showLabels
-            onChange={this.handleOpenLink}>
+            onChange={this.handleOpenLink}
+            style={{backgroundColor: '#FFCBCB'}}
+            >
               <BottomNavigationAction label='SmartPiggies' value='https://www.smartpiggies.com'/>
               <BottomNavigationAction label='GitHub' value='https://github.com/smartpiggies'/>
               <BottomNavigationAction label='Twitter' value='https://twitter.com/smart_piggies'/>

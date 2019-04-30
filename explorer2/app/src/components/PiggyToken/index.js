@@ -21,6 +21,10 @@ const blockHours = web3.utils.toBN(240) // 4 blocks per minute * 60 minutes per 
 
 let addressValues, uintValues, boolValues, auctionValues
 
+let bkgdColor = {
+  backgroundColor: '#FFCBCB'
+}
+
 class PiggyToken extends Component {
   constructor(props, context) {
     super(props)
@@ -107,7 +111,7 @@ class PiggyToken extends Component {
     //console.log(this.state.dataKey)
     return (
       <div>
-        <ExpansionPanel onChange={this.handleExpand}>
+        <ExpansionPanel onChange={this.handleExpand} >
           <ExpansionPanelSummary>
               <Grid container spacing={0}>
                 <Grid item xs={2}>
