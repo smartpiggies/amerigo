@@ -4,10 +4,13 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import AppBar from '@material-ui/core/AppBar'
-import FetchData from "../FetchData"
 import Card from '@material-ui/core/Card'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+
+//import components
+import FetchData from "../FetchData"
+
 
 import '../../App.js'
 
@@ -40,6 +43,7 @@ class Home extends Component {
       onlyOnAuction: false,
       //datakeys
       dataKeyGetOwnedPiggies: '',
+      value: 0,
     }
 
   }
@@ -136,8 +140,13 @@ class Home extends Component {
   }
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
-  };
+    this.setState({ [name]: event.target.checked })
+  }
+
+  handleBotNav = (event, value) => {
+    console.log(value)
+    console.log(event)
+  }
 
   render() {
     //console.log(this.state.piggyDetailMap)

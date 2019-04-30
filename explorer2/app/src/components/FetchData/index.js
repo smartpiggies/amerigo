@@ -87,6 +87,7 @@ class FetchData extends Component {
   }
 
   async fetchOracleData(oaddress) {
+    console.log(oaddress)
     let otx = await fetch('https://api.goerli.aleth.io/v1/contracts/' + oaddress)
     let otxjson = await otx.json()
 
@@ -98,6 +99,12 @@ class FetchData extends Component {
         this.hex2a(otxjson.data.attributes.constructorArgs[15]) +
           this.hex2a(otxjson.data.attributes.constructorArgs[16]) +
             this.hex2a(otxjson.data.attributes.constructorArgs[17])
+    } else if (otxjson.data.attributes.constructorArgs[16] !== undefined) {
+      returndata['underlying'] = this.hex2a(otxjson.data.attributes.constructorArgs[10])
+      returndata['datasource'] = this.hex2a(otxjson.data.attributes.constructorArgs[8])
+      returndata['api'] = this.hex2a(otxjson.data.attributes.constructorArgs[14]) +
+        this.hex2a(otxjson.data.attributes.constructorArgs[15]) +
+          this.hex2a(otxjson.data.attributes.constructorArgs[16])
     }
 
     return returndata
@@ -238,7 +245,7 @@ class FetchData extends Component {
         }
       })
     }
-
+    //console.log(this.state.pdict)
     return (
       <div>
         {tokens}
