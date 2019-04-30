@@ -7,6 +7,10 @@ import AppBar from '@material-ui/core/AppBar'
 import Card from '@material-ui/core/Card'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import BottomNavigation from '@material-ui/core/BottomNavigation'
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
 
 //import components
 import FetchData from "../FetchData"
@@ -143,9 +147,8 @@ class Home extends Component {
     this.setState({ [name]: event.target.checked })
   }
 
-  handleBotNav = (event, value) => {
-    console.log(value)
-    console.log(event)
+  handleOpenLink = (event, value) => {
+    window.open(value, '_blank')
   }
 
   render() {
@@ -171,8 +174,15 @@ class Home extends Component {
             </tbody>
           </table>
         </AppBar>
-
         <div className='Main'>
+          <div>
+            <Card className='WelcomeBar'>
+              <Typography variant='h4' className='WelcomeBar'>Welcome to Amerigo!</Typography>
+              <Divider />
+              <Typography variant='body1' className='WelcomeBar'>Amerigo is an explorer for SmartPiggies. View available options below, and if you find one you like, buy it!</Typography>
+            </Card>
+          </div>
+          <br></br>
           <Card>
             <FormControlLabel
               style={toggle}
@@ -189,6 +199,15 @@ class Home extends Component {
             <FetchData block={this.state.blockNumber} onlyOnAuction={this.state.onlyOnAuction} />
           </Card>
         </div>
+        <div className='Footer'>
+            <BottomNavigation
+            showLabels
+            onChange={this.handleOpenLink}>
+              <BottomNavigationAction label='SmartPiggies' value='https://www.smartpiggies.com'/>
+              <BottomNavigationAction label='GitHub' value='https://github.com/smartpiggies'/>
+              <BottomNavigationAction label='Twitter' value='https://twitter.com/smart_piggies'/>
+            </BottomNavigation>
+          </div>
       </div>
     )
   }
