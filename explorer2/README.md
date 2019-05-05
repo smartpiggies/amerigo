@@ -5,11 +5,15 @@ SmartPiggies
 An open source standard for a free peer-to-peer global derivatives market.
 -
 
+### The initial work for this submission was done in this [repo](https://github.com/smartpiggies/amerigo/tree/master/explorer2): please view it for proof of commits to the work process.
+
+A hosted version of this dapp can be viewed at [explorer.smartpiggies.com](https://explorer.smartpiggies.com).
+
 SmartPiggies are non-fungible digital contracts that provide their owners with protection against undesirable changes in the price of any asset, product, or service. They also have a native self-auctioning mechanism that allows them to globally market themselves, eliminating the need for exchanges.
 
-Historically, centralized authorities and rent collecting intermediaries have been critical due the trust and guarantees they inject into modern financial commitments. Today, with the guarantees provided by the Ethereum network and recent innovations provided by the global community, it is now possible to create robust programmable digital assets with linked to the real world, yet have no dependencies on centralized authorities or intermediaries.
+Historically, centralized authorities and rent collecting intermediaries have been  necessary due the trust and guarantees they inject into modern financial commitments. Today, with the guarantees provided by the Ethereum network and recent innovations provided by the global community, it is now possible to create robust programmable digital assets linked to the real world prices that have no dependencies on centralized authorities or intermediaries.
 
-SmartPiggies are an example of simple, useful, globally accessible, peer-to-peer financial agreements that can exist on the Ethereum network today.
+SmartPiggies are an example of simple, useful, globally accessible, peer-to-peer financial agreements that can exist on the Ethereum network today. 
 
 For more information on the project and to read the pinkpaper please visit the [website](https://smartpiggies.com).
 
@@ -46,11 +50,11 @@ Our goal is to continue to build out this design to offer a full feature explore
 
 ## A specific industry, user, and use case for which you are solving
 
-SmartPiggies is a decentralized financial product for use by small business and individuals to hedge against price movements of any asset, product, or service for which a price can be retrieved,
+SmartPiggies is a decentralized financial product for use by small businesses and individuals to hedge against price movements of any asset, product, or service for which a price can be retrieved,
 
-SmartPiggies are effectively a price insurance product. SmartPiggies are effective for a specified period of time, provide a specified maximum amount of coverage, and pay out based on specified conditions as would any typical insurance product.   An insurance issuer receives a premium in exchange providing this insurance.
+SmartPiggies are effectively a price insurance product. SmartPiggies are effective for a specified period of time,  maximum amount of coverage, and pays out based on pre-established conditions as would any typical insurance product.
 
-We envision that the primary purchasers of SmartPiggy contracts will be small businesses that are underserved by the global financial system and are exposed to fluctuations in prices for goods, services, and exchange rates that that are inherent to their business activities.
+We envision that the primary purchasers of SmartPiggy contracts will be small businesses that are underserved by the global financial system and are exposed to fluctuations in prices for goods, services, and exchange rates that are inherent to their business activities.
 
 ## Unique insights about the industry gathered through primary or secondary research
 
@@ -62,7 +66,7 @@ Other derivatives in the DeFi industry space do not appear to currently offer th
 
 As we have seen significant cryptocurrency adoption in countries where the need is great, we also believe that small businesses and individuals around the world that suffer through fluctuations in price will immediately grasp that SmartPiggies may be useful to them.
 
-In our view we are not disrupting an existing market. We are creating an ecosystem that generates a financial service that has never before been available to the vast majority of humanity due to scale and and availability issues inherent to the existing global financial and legal system.
+In our view, we are not disrupting an existing market. We are creating an ecosystem that generates a financial utility that has never before been available to the vast majority of humanity due to the structural limitations of the existing global financial and legal system.
 
 ## Proof that blockchain adds significant value to this solution over centralized alternatives
 
@@ -75,13 +79,12 @@ Our rollout plans are flexible at the moment.
 For now we are focused on on constructing the MVP contracts and minimal UI components.
 
 If we manage to raise funding at some point in the future we can consider outreach and education efforts, a more sophisticated UI, publishing research and use cases, providing a trusted exchange service, and providing liquidity to the market.
+
 As of now we are unfunded and as such our scope is limited to working on an MVP in our spare time.
 
 ## Team
 [Michael Arief](https://www.linkedin.com/in/mikearief/)
-
 [Toby Algya](https://www.linkedin.com/in/toby-algya-58997712/)
-
 [Alex Lee](https://www.linkedin.com/in/ahlee328/)
 
 ## Tech stack
