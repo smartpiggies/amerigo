@@ -1,5 +1,5 @@
 SmartPiggies
-<img align="right" width="300" src="app/src/Assets/Logo/piggieface_02.png">
+<img align="right" width="300" src="app/src/Assets/Logo/fancy_smart_piggy_01.svg">
 =
 
 An open source standard for a free peer-to-peer global derivatives market.
@@ -13,7 +13,7 @@ SmartPiggies are non-fungible digital contracts that provide their owners with p
 
 Historically, centralized authorities and rent collecting intermediaries have been  necessary due the trust and guarantees they inject into modern financial commitments. Today, with the guarantees provided by the Ethereum network and recent innovations provided by the global community, it is now possible to create robust programmable digital assets linked to the real world prices that have no dependencies on centralized authorities or intermediaries.
 
-SmartPiggies are an example of simple, useful, globally accessible, peer-to-peer financial agreements that can exist on the Ethereum network today. 
+SmartPiggies are an example of simple, useful, globally accessible, peer-to-peer financial agreements that can exist on the Ethereum network today.
 
 For more information on the project and to read the pinkpaper please visit the [website](https://smartpiggies.com).
 
